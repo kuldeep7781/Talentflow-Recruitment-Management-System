@@ -5,7 +5,7 @@ import {
   getJob,
   createJob,
   updateJob,
-  deleteJob
+  deleteJob,
 } from "../controllers/jobController.js";
 
 const router = Router();

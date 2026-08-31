@@ -27,46 +27,41 @@ export default function App() {
     }
   }
   async function loadJobs() {
-  try {
-    setJobs(await getJobs());
-  } catch (error) {
-    console.error(error);
+    try {
+      setJobs(await getJobs());
+    } catch (error) {
+      console.error(error);
+    }
   }
-}
   useEffect(() => {
     loadCandidates();
     loadJobs();
   }, []);
-  const stats = useMemo(() => ({
-  total: candidates.length,
+  const stats = useMemo(
+    () => ({
+      total: candidates.length,
 
-  available: candidates.filter(
-    (candidate) => candidate.status === "Available"
-  ).length,
+      available: candidates.filter(
+        (candidate) => candidate.status === "Available",
+      ).length,
 
-  interviewing: candidates.filter(
-    (candidate) => candidate.status === "Interviewing"
-  ).length,
+      interviewing: candidates.filter(
+        (candidate) => candidate.status === "Interviewing",
+      ).length,
 
-  hired: candidates.filter(
-    (candidate) => candidate.status === "Hired"
-  ).length,
+      hired: candidates.filter((candidate) => candidate.status === "Hired")
+        .length,
 
-  totalJobs: jobs.length,
+      totalJobs: jobs.length,
 
-  openJobs: jobs.filter(
-    (job) => job.status === "Open"
-  ).length,
+      openJobs: jobs.filter((job) => job.status === "Open").length,
 
-  draftJobs: jobs.filter(
-    (job) => job.status === "Draft"
-  ).length,
+      draftJobs: jobs.filter((job) => job.status === "Draft").length,
 
-  closedJobs: jobs.filter(
-    (job) => job.status === "Closed"
-  ).length
-
-}), [candidates, jobs]);
+      closedJobs: jobs.filter((job) => job.status === "Closed").length,
+    }),
+    [candidates, jobs],
+  );
   return (
     <Routes>
       <Route element={<Layout />}>
@@ -98,7 +93,6 @@ export default function App() {
         <Route path="/reports" element={<Reports stats={stats} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
-      
     </Routes>
   );
 }

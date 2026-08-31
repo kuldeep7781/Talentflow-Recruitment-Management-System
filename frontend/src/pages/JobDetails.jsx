@@ -6,7 +6,7 @@ import {
   MapPin,
   Users,
   Clock3,
-  FileText
+  FileText,
 } from "lucide-react";
 
 import { getJob } from "../services/jobApi.js";
@@ -48,11 +48,7 @@ export default function JobDetails() {
   }
 
   if (error) {
-    return (
-      <div className="alert">
-        {error}
-      </div>
-    );
+    return <div className="alert">{error}</div>;
   }
 
   if (!job) {
@@ -72,54 +68,34 @@ export default function JobDetails() {
       </Link>
 
       <section className="profile-header panel">
-
         <div className="large-avatar">
           <BriefcaseBusiness size={30} />
         </div>
 
         <div className="profile-main">
-
-          <p className="eyebrow">
-            JOB POSITION
-          </p>
+          <p className="eyebrow">JOB POSITION</p>
 
           <h1>{job.title}</h1>
 
-          <p>
-            {job.department}
-          </p>
+          <p>{job.department}</p>
 
-          <span
-            className={`status ${job.status.toLowerCase()}`}
-          >
+          <span className={`status ${job.status.toLowerCase()}`}>
             {job.status}
           </span>
-
         </div>
-
       </section>
 
       <div className="details-grid">
-
         <div className="panel">
-
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">
-                POSITION DETAILS
-              </p>
+              <p className="eyebrow">POSITION DETAILS</p>
 
-              <h2>
-                Job information
-              </h2>
+              <h2>Job information</h2>
             </div>
           </div>
 
-          <Info
-            icon={<MapPin />}
-            label="Location"
-            value={job.location}
-          />
+          <Info icon={<MapPin />} label="Location" value={job.location} />
 
           <Info
             icon={<Users />}
@@ -138,59 +114,37 @@ export default function JobDetails() {
             label="Experience"
             value={`${job.experienceRequired}+ years`}
           />
-
         </div>
 
         <div className="panel">
-
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">
-                REQUIREMENTS
-              </p>
+              <p className="eyebrow">REQUIREMENTS</p>
 
-              <h2>
-                Required skills
-              </h2>
+              <h2>Required skills</h2>
             </div>
           </div>
 
           <div className="skills large-skills">
-
             {job.requiredSkills?.map((skill) => (
-              <span key={skill}>
-                {skill}
-              </span>
+              <span key={skill}>{skill}</span>
             ))}
-
           </div>
-
         </div>
-
       </div>
 
       <div className="panel description-panel">
-
         <div className="panel-heading">
-
           <div>
-            <p className="eyebrow">
-              ROLE DESCRIPTION
-            </p>
+            <p className="eyebrow">ROLE DESCRIPTION</p>
 
-            <h2>
-              About this position
-            </h2>
+            <h2>About this position</h2>
           </div>
 
           <FileText size={20} />
-
         </div>
 
-        <p className="job-description">
-          {job.description}
-        </p>
-
+        <p className="job-description">{job.description}</p>
       </div>
     </>
   );
@@ -199,16 +153,12 @@ export default function JobDetails() {
 function Info({ icon, label, value }) {
   return (
     <div className="info-row">
-
-      <div className="module-icon">
-        {icon}
-      </div>
+      <div className="module-icon">{icon}</div>
 
       <div>
         <small>{label}</small>
         <strong>{value}</strong>
       </div>
-
     </div>
   );
 }

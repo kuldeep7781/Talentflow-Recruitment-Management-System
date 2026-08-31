@@ -16,7 +16,7 @@ export async function getJob(req, res, next) {
 
     if (!job) {
       return res.status(404).json({
-        message: "Job not found"
+        message: "Job not found",
       });
     }
 
@@ -38,14 +38,11 @@ export async function createJob(req, res, next) {
 
 export async function updateJob(req, res, next) {
   try {
-    const job = await jobService.updateJob(
-      req.params.id,
-      req.body
-    );
+    const job = await jobService.updateJob(req.params.id, req.body);
 
     if (!job) {
       return res.status(404).json({
-        message: "Job not found"
+        message: "Job not found",
       });
     }
 
@@ -61,12 +58,12 @@ export async function deleteJob(req, res, next) {
 
     if (!job) {
       return res.status(404).json({
-        message: "Job not found"
+        message: "Job not found",
       });
     }
 
     res.json({
-      message: "Job deleted successfully"
+      message: "Job deleted successfully",
     });
   } catch (error) {
     next(error);

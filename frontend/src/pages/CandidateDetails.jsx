@@ -1,6 +1,115 @@
-import {Link,useParams} from "react-router-dom";
-import {useEffect,useState} from "react";
-import {ArrowLeft,Mail,Phone,BriefcaseBusiness,CalendarDays,FileText} from "lucide-react";
-import {getCandidate} from "../services/candidateApi.js";
-export default function CandidateDetails(){const{id}=useParams(),[candidate,setCandidate]=useState(null),[loading,setLoading]=useState(true),[error,setError]=useState("");useEffect(()=>{getCandidate(id).then(setCandidate).catch(e=>setError(e.message)).finally(()=>setLoading(false))},[id]);if(loading)return <div className="empty-state page-empty"><div className="spinner"/><p>Loading candidate...</p></div>;if(error)return <div className="alert">{error}</div>;return <><Link to="/candidates" className="back-link"><ArrowLeft size={16}/> Back to Candidates</Link><section className="profile-header panel"><div className="large-avatar">{candidate.name?.[0]?.toUpperCase()}</div><div className="profile-main"><p className="eyebrow">CANDIDATE PROFILE</p><h1>{candidate.name}</h1><p>{candidate.email}</p><span className={`status ${candidate.status.toLowerCase()}`}>{candidate.status}</span></div><Link to="/applications" className="secondary-button link-button">View Applications</Link></section><div className="details-grid"><div className="panel"><div className="panel-heading"><div><p className="eyebrow">CONTACT</p><h2>Candidate information</h2></div></div><Info icon={<Mail/>} label="Email" value={candidate.email}/><Info icon={<Phone/>} label="Phone" value={candidate.phone||"Not provided"}/><Info icon={<BriefcaseBusiness/>} label="Experience" value={`${candidate.experience} years`}/></div><div className="panel"><div className="panel-heading"><div><p className="eyebrow">SKILLS</p><h2>Technical profile</h2></div></div><div className="skills large-skills">{(candidate.skills||[]).map(s=><span key={s}>{s}</span>)}</div><div className="placeholder-card"><CalendarDays size={20}/><div><strong>Interviews</strong><p>Interview records will be connected here in the next module.</p></div></div><div className="placeholder-card"><FileText size={20}/><div><strong>Applications</strong><p>Application history will appear here as we expand the project.</p></div></div></div></div></>}
-function Info({icon,label,value}){return <div className="info-row"><div className="module-icon">{icon}</div><div><small>{label}</small><strong>{value}</strong></div></div>}
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  ArrowLeft,
+  Mail,
+  Phone,
+  BriefcaseBusiness,
+  CalendarDays,
+  FileText,
+} from "lucide-react";
+import { getCandidate } from "../services/candidateApi.js";
+export default function CandidateDetails() {
+  const { id } = useParams(),
+    [candidate, setCandidate] = useState(null),
+    [loading, setLoading] = useState(true),
+    [error, setError] = useState("");
+  useEffect(() => {
+    getCandidate(id)
+      .then(setCandidate)
+      .catch((e) => setError(e.message))
+      .finally(() => setLoading(false));
+  }, [id]);
+  if (loading)
+    return (
+      <div className="empty-state page-empty">
+        <div className="spinner" />
+        <p>Loading candidate...</p>
+      </div>
+    );
+  if (error) return <div className="alert">{error}</div>;
+  return (
+    <>
+      <Link to="/candidates" className="back-link">
+        <ArrowLeft size={16} /> Back to Candidates
+      </Link>
+      <section className="profile-header panel">
+        <div className="large-avatar">{candidate.name?.[0]?.toUpperCase()}</div>
+        <div className="profile-main">
+          <p className="eyebrow">CANDIDATE PROFILE</p>
+          <h1>{candidate.name}</h1>
+          <p>{candidate.email}</p>
+          <span className={`status ${candidate.status.toLowerCase()}`}>
+            {candidate.status}
+          </span>
+        </div>
+        <Link to="/applications" className="secondary-button link-button">
+          View Applications
+        </Link>
+      </section>
+      <div className="details-grid">
+        <div className="panel">
+          <div className="panel-heading">
+            <div>
+              <p className="eyebrow">CONTACT</p>
+              <h2>Candidate information</h2>
+            </div>
+          </div>
+          <Info icon={<Mail />} label="Email" value={candidate.email} />
+          <Info
+            icon={<Phone />}
+            label="Phone"
+            value={candidate.phone || "Not provided"}
+          />
+          <Info
+            icon={<BriefcaseBusiness />}
+            label="Experience"
+            value={`${candidate.experience} years`}
+          />
+        </div>
+        <div className="panel">
+          <div className="panel-heading">
+            <div>
+              <p className="eyebrow">SKILLS</p>
+              <h2>Technical profile</h2>
+            </div>
+          </div>
+          <div className="skills large-skills">
+            {(candidate.skills || []).map((s) => (
+              <span key={s}>{s}</span>
+            ))}
+          </div>
+          <div className="placeholder-card">
+            <CalendarDays size={20} />
+            <div>
+              <strong>Interviews</strong>
+              <p>
+                Interview records will be connected here in the next module.
+              </p>
+            </div>
+          </div>
+          <div className="placeholder-card">
+            <FileText size={20} />
+            <div>
+              <strong>Applications</strong>
+              <p>
+                Application history will appear here as we expand the project.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+function Info({ icon, label, value }) {
+  return (
+    <div className="info-row">
+      <div className="module-icon">{icon}</div>
+      <div>
+        <small>{label}</small>
+        <strong>{value}</strong>
+      </div>
+    </div>
+  );
+}

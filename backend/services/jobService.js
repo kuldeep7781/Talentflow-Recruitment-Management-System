@@ -13,14 +13,10 @@ export function createJob(data) {
 }
 
 export function updateJob(id, data) {
-  return Job.findByIdAndUpdate(
-    id,
-    data,
-    {
-      new: true,
-      runValidators: true
-    }
-  );
+  return Job.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+  });
 }
 
 export function deleteJob(id) {

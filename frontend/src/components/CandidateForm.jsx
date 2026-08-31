@@ -1,11 +1,158 @@
-import {useEffect,useState} from "react";
-import {createCandidate,updateCandidate} from "../services/candidateApi.js";
-import {X} from "lucide-react";
-const empty={name:"",email:"",phone:"",skills:"",experience:"",status:"Available"};
-export default function CandidateForm({editingCandidate,onSaved,onCancel}){
- const [form,setForm]=useState(empty),[saving,setSaving]=useState(false),[error,setError]=useState("");
- useEffect(()=>{setForm(editingCandidate?{name:editingCandidate.name||"",email:editingCandidate.email||"",phone:editingCandidate.phone||"",skills:(editingCandidate.skills||[]).join(", "),experience:editingCandidate.experience??"",status:editingCandidate.status||"Available"}:empty)},[editingCandidate]);
- function change(e){setForm(f=>({...f,[e.target.name]:e.target.value}))}
- async function submit(e){e.preventDefault();try{setSaving(true);setError("");const payload={...form,skills:form.skills.split(",").map(s=>s.trim()).filter(Boolean),experience:Number(form.experience)||0};if(editingCandidate)await updateCandidate(editingCandidate._id,payload);else await createCandidate(payload);setForm(empty);await onSaved()}catch(e){setError(e.message)}finally{setSaving(false)}}
- return <div className="panel form-panel"><div className="panel-heading"><div><p className="eyebrow">CANDIDATE PROFILE</p><h2>{editingCandidate?"Edit candidate":"Add candidate"}</h2></div>{editingCandidate&&<button className="icon-button" onClick={onCancel}><X size={18}/></button>}</div>{error&&<div className="inline-error">{error}</div>}<form onSubmit={submit}><Field label="Full name"><input name="name" value={form.name} onChange={change} placeholder="e.g. Kuldeep Sharma" required/></Field><Field label="Email"><input name="email" type="email" value={form.email} onChange={change} placeholder="candidate@example.com" required/></Field><div className="two-col"><Field label="Phone"><input name="phone" value={form.phone} onChange={change} placeholder="9876543210"/></Field><Field label="Experience"><input name="experience" type="number" min="0" step="0.1" value={form.experience} onChange={change} placeholder="2"/></Field></div><Field label="Skills"><input name="skills" value={form.skills} onChange={change} placeholder="React, Node.js, MongoDB"/><small>Separate skills with commas.</small></Field><Field label="Status"><select name="status" value={form.status} onChange={change}><option>Available</option><option>Interviewing</option><option>Hired</option><option>Rejected</option></select></Field><div className="form-actions">{editingCandidate&&<button type="button" className="secondary-button" onClick={onCancel}>Cancel</button>}<button className="primary-button" disabled={saving}>{saving?"Saving...":editingCandidate?"Update Candidate":"Add Candidate"}</button></div></form></div>}
-function Field({label,children}){return <label className="field"><span>{label}</span>{children}</label>}
+import { useEffect, useState } from "react";
+import { createCandidate, updateCandidate } from "../services/candidateApi.js";
+import { X } from "lucide-react";
+const empty = {
+  name: "",
+  email: "",
+  phone: "",
+  skills: "",
+  experience: "",
+  status: "Available",
+};
+export default function CandidateForm({ editingCandidate, onSaved, onCancel }) {
+  const [form, setForm] = useState(empty),
+    [saving, setSaving] = useState(false),
+    [error, setError] = useState("");
+  useEffect(() => {
+    setForm(
+      editingCandidate
+        ? {
+            name: editingCandidate.name || "",
+            email: editingCandidate.email || "",
+            phone: editingCandidate.phone || "",
+            skills: (editingCandidate.skills || []).join(", "),
+            experience: editingCandidate.experience ?? "",
+            status: editingCandidate.status || "Available",
+          }
+        : empty,
+    );
+  }, [editingCandidate]);
+  function change(e) {
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  }
+  async function submit(e) {
+    e.preventDefault();
+    try {
+      setSaving(true);
+      setError("");
+      const payload = {
+        ...form,
+        skills: form.skills
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+        experience: Number(form.experience) || 0,
+      };
+      if (editingCandidate)
+        await updateCandidate(editingCandidate._id, payload);
+      else await createCandidate(payload);
+      setForm(empty);
+      await onSaved();
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+  return (
+    <div className="panel form-panel">
+      <div className="panel-heading">
+        <div>
+          <p className="eyebrow">CANDIDATE PROFILE</p>
+          <h2>{editingCandidate ? "Edit candidate" : "Add candidate"}</h2>
+        </div>
+        {editingCandidate && (
+          <button className="icon-button" onClick={onCancel}>
+            <X size={18} />
+          </button>
+        )}
+      </div>
+      {error && <div className="inline-error">{error}</div>}
+      <form onSubmit={submit}>
+        <Field label="Full name">
+          <input
+            name="name"
+            value={form.name}
+            onChange={change}
+            placeholder="e.g. Kuldeep Sharma"
+            required
+          />
+        </Field>
+        <Field label="Email">
+          <input
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={change}
+            placeholder="candidate@example.com"
+            required
+          />
+        </Field>
+        <div className="two-col">
+          <Field label="Phone">
+            <input
+              name="phone"
+              value={form.phone}
+              onChange={change}
+              placeholder="9876543210"
+            />
+          </Field>
+          <Field label="Experience">
+            <input
+              name="experience"
+              type="number"
+              min="0"
+              step="0.1"
+              value={form.experience}
+              onChange={change}
+              placeholder="2"
+            />
+          </Field>
+        </div>
+        <Field label="Skills">
+          <input
+            name="skills"
+            value={form.skills}
+            onChange={change}
+            placeholder="React, Node.js, MongoDB"
+          />
+          <small>Separate skills with commas.</small>
+        </Field>
+        <Field label="Status">
+          <select name="status" value={form.status} onChange={change}>
+            <option>Available</option>
+            <option>Interviewing</option>
+            <option>Hired</option>
+            <option>Rejected</option>
+          </select>
+        </Field>
+        <div className="form-actions">
+          {editingCandidate && (
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+          )}
+          <button className="primary-button" disabled={saving}>
+            {saving
+              ? "Saving..."
+              : editingCandidate
+                ? "Update Candidate"
+                : "Add Candidate"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+function Field({ label, children }) {
+  return (
+    <label className="field">
+      <span>{label}</span>
+      {children}
+    </label>
+  );
+}

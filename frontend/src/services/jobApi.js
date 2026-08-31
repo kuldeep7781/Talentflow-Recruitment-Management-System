@@ -1,5 +1,4 @@
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 async function parseResponse(response) {
   const data = await response.json().catch(() => ({}));
@@ -27,9 +26,9 @@ export async function createJob(job) {
   const response = await fetch(`${API_URL}/jobs`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(job)
+    body: JSON.stringify(job),
   });
 
   return parseResponse(response);
@@ -39,9 +38,9 @@ export async function updateJob(id, job) {
   const response = await fetch(`${API_URL}/jobs/${id}`, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(job)
+    body: JSON.stringify(job),
   });
 
   return parseResponse(response);
@@ -49,7 +48,7 @@ export async function updateJob(id, job) {
 
 export async function deleteJob(id) {
   const response = await fetch(`${API_URL}/jobs/${id}`, {
-    method: "DELETE"
+    method: "DELETE",
   });
 
   return parseResponse(response);

@@ -5,58 +5,58 @@ const jobSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
 
     department: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
 
     location: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
 
     employmentType: {
       type: String,
       enum: ["Full Time", "Part Time", "Contract", "Internship"],
-      default: "Full Time"
+      default: "Full Time",
     },
 
     description: {
       type: String,
-      required: true
+      required: true,
     },
 
     requiredSkills: {
       type: [String],
-      default: []
+      default: [],
     },
 
     experienceRequired: {
       type: Number,
       min: 0,
-      default: 0
+      default: 0,
     },
 
     openings: {
       type: Number,
       min: 1,
-      default: 1
+      default: 1,
     },
 
     status: {
       type: String,
       enum: ["Draft", "Open", "Closed"],
-      default: "Draft"
-    }
+      default: "Draft",
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 export default mongoose.model("Job", jobSchema);

@@ -1,6 +1,136 @@
-import {useMemo,useState} from "react";
-import {Link} from "react-router-dom";
-import {Search,Pencil,Trash2,Users,ArrowRight} from "lucide-react";
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { Search, Pencil, Trash2, Users, ArrowRight } from "lucide-react";
 import CandidateForm from "../components/CandidateForm.jsx";
-import {deleteCandidate} from "../services/candidateApi.js";
-export default function Candidates({candidates,loading,onReload}){const[search,setSearch]=useState(""),[editing,setEditing]=useState(null),[showForm,setShowForm]=useState(false),[error,setError]=useState("");const filtered=useMemo(()=>{const t=search.toLowerCase().trim();if(!t)return candidates;return candidates.filter(c=>[c.name,c.email,c.status,...(c.skills||[])].join(" ").toLowerCase().includes(t))},[candidates,search]);async function remove(id){if(!confirm("Delete this candidate? This action cannot be undone."))return;try{await deleteCandidate(id);await onReload()}catch(e){setError(e.message)}}function cancel(){setEditing(null);setShowForm(false)}return <><section className="page-title-row"><div><p className="eyebrow">TALENT POOL</p><h1>Candidates</h1><p>Manage candidate profiles and track their recruitment status.</p></div><button className="primary-button" onClick={()=>{setEditing(null);setShowForm(true)}}>+ Add Candidate</button></section>{error&&<div className="alert">{error}</div>}{showForm&&<CandidateForm editingCandidate={editing} onSaved={async()=>{cancel();await onReload()}} onCancel={cancel}/>}<div className="panel"><div className="toolbar"><div><strong>{filtered.length}</strong> candidates</div><div className="search-box"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search name, email or skill..."/></div></div>{loading?<div className="empty-state"><div className="spinner"/><p>Loading...</p></div>:filtered.length===0?<div className="empty-state"><Users size={40}/><h3>No candidates found</h3><p>Try another search or add a candidate.</p></div>:<div className="table-list">{filtered.map(c=><div className="table-row" key={c._id}><div className="candidate-summary"><div className="avatar">{c.name?.[0]?.toUpperCase()}</div><div><Link to={`/candidates/${c._id}`} className="name-link">{c.name}</Link><span>{c.email}</span></div></div><div className="desktop-meta"><span>{c.experience} yrs</span><span>{(c.skills||[]).slice(0,3).join(" • ")}</span></div><span className={`status ${c.status.toLowerCase()}`}>{c.status}</span><div className="row-actions"><button className="icon-button" onClick={()=>{setEditing(c);setShowForm(true)}}><Pencil size={16}/></button><button className="icon-button danger" onClick={()=>remove(c._id)}><Trash2 size={16}/></button><Link className="icon-button" to={`/candidates/${c._id}`}><ArrowRight size={16}/></Link></div></div>)}</div>}</div></> }
+import { deleteCandidate } from "../services/candidateApi.js";
+export default function Candidates({ candidates, loading, onReload }) {
+  const [search, setSearch] = useState(""),
+    [editing, setEditing] = useState(null),
+    [showForm, setShowForm] = useState(false),
+    [error, setError] = useState("");
+  const filtered = useMemo(() => {
+    const t = search.toLowerCase().trim();
+    if (!t) return candidates;
+    return candidates.filter((c) =>
+      [c.name, c.email, c.status, ...(c.skills || [])]
+        .join(" ")
+        .toLowerCase()
+        .includes(t),
+    );
+  }, [candidates, search]);
+  async function remove(id) {
+    if (!confirm("Delete this candidate? This action cannot be undone."))
+      return;
+    try {
+      await deleteCandidate(id);
+      await onReload();
+    } catch (e) {
+      setError(e.message);
+    }
+  }
+  function cancel() {
+    setEditing(null);
+    setShowForm(false);
+  }
+  return (
+    <>
+      <section className="page-title-row">
+        <div>
+          <p className="eyebrow">TALENT POOL</p>
+          <h1>Candidates</h1>
+          <p>Manage candidate profiles and track their recruitment status.</p>
+        </div>
+        <button
+          className="primary-button"
+          onClick={() => {
+            setEditing(null);
+            setShowForm(true);
+          }}
+        >
+          + Add Candidate
+        </button>
+      </section>
+      {error && <div className="alert">{error}</div>}
+      {showForm && (
+        <CandidateForm
+          editingCandidate={editing}
+          onSaved={async () => {
+            cancel();
+            await onReload();
+          }}
+          onCancel={cancel}
+        />
+      )}
+      <div className="panel">
+        <div className="toolbar">
+          <div>
+            <strong>{filtered.length}</strong> candidates
+          </div>
+          <div className="search-box">
+            <Search size={17} />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search name, email or skill..."
+            />
+          </div>
+        </div>
+        {loading ? (
+          <div className="empty-state">
+            <div className="spinner" />
+            <p>Loading...</p>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="empty-state">
+            <Users size={40} />
+            <h3>No candidates found</h3>
+            <p>Try another search or add a candidate.</p>
+          </div>
+        ) : (
+          <div className="table-list">
+            {filtered.map((c) => (
+              <div className="table-row" key={c._id}>
+                <div className="candidate-summary">
+                  <div className="avatar">{c.name?.[0]?.toUpperCase()}</div>
+                  <div>
+                    <Link to={`/candidates/${c._id}`} className="name-link">
+                      {c.name}
+                    </Link>
+                    <span>{c.email}</span>
+                  </div>
+                </div>
+                <div className="desktop-meta">
+                  <span>{c.experience} yrs</span>
+                  <span>{(c.skills || []).slice(0, 3).join(" • ")}</span>
+                </div>
+                <span className={`status ${c.status.toLowerCase()}`}>
+                  {c.status}
+                </span>
+                <div className="row-actions">
+                  <button
+                    className="icon-button"
+                    onClick={() => {
+                      setEditing(c);
+                      setShowForm(true);
+                    }}
+                  >
+                    <Pencil size={16} />
+                  </button>
+                  <button
+                    className="icon-button danger"
+                    onClick={() => remove(c._id)}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                  <Link className="icon-button" to={`/candidates/${c._id}`}>
+                    <ArrowRight size={16} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  );
+}

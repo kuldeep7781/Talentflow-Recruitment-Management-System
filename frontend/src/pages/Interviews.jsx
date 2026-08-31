@@ -1,2 +1,71 @@
-import {CalendarDays,Clock3,Video,UserRound} from "lucide-react";
-export default function Interviews(){const data=[["Kuldeep Sharma","Frontend Developer","Aug 30, 2026","11:00 AM","Technical Round"],["Rahul Sharma","Backend Developer","Sep 01, 2026","02:30 PM","Managerial Round"],["Amit Patel","Salesforce Developer","Sep 03, 2026","04:00 PM","Technical Round"]];return <><section className="page-title-row"><div><p className="eyebrow">INTERVIEW CALENDAR</p><h1>Interviews</h1><p>Keep upcoming interviews and interviewer feedback organized.</p></div><button className="primary-button"><CalendarDays size={16}/> Schedule Interview</button></section><div className="panel"><div className="interview-list">{data.map(i=><article className="interview-row" key={i[0]}><div className="date-box"><strong>{i[1][0]}</strong><span>{i[2].split(" ")[0]}</span></div><div className="interview-main"><h3>{i[0]}</h3><p>{i[1]}</p><div className="interview-meta"><span><Clock3 size={14}/>{i[3]}</span><span><Video size={14}/>{i[4]}</span><span><UserRound size={14}/>Recruiter</span></div></div><button className="secondary-button">View</button></article>)}</div></div></>}
+import { CalendarDays, Clock3, Video, UserRound } from "lucide-react";
+export default function Interviews() {
+  const data = [
+    [
+      "Kuldeep Sharma",
+      "Frontend Developer",
+      "Aug 30, 2026",
+      "11:00 AM",
+      "Technical Round",
+    ],
+    [
+      "Rahul Sharma",
+      "Backend Developer",
+      "Sep 01, 2026",
+      "02:30 PM",
+      "Managerial Round",
+    ],
+    [
+      "Amit Patel",
+      "Salesforce Developer",
+      "Sep 03, 2026",
+      "04:00 PM",
+      "Technical Round",
+    ],
+  ];
+  return (
+    <>
+      <section className="page-title-row">
+        <div>
+          <p className="eyebrow">INTERVIEW CALENDAR</p>
+          <h1>Interviews</h1>
+          <p>Keep upcoming interviews and interviewer feedback organized.</p>
+        </div>
+        <button className="primary-button">
+          <CalendarDays size={16} /> Schedule Interview
+        </button>
+      </section>
+      <div className="panel">
+        <div className="interview-list">
+          {data.map((i) => (
+            <article className="interview-row" key={i[0]}>
+              <div className="date-box">
+                <strong>{i[1][0]}</strong>
+                <span>{i[2].split(" ")[0]}</span>
+              </div>
+              <div className="interview-main">
+                <h3>{i[0]}</h3>
+                <p>{i[1]}</p>
+                <div className="interview-meta">
+                  <span>
+                    <Clock3 size={14} />
+                    {i[3]}
+                  </span>
+                  <span>
+                    <Video size={14} />
+                    {i[4]}
+                  </span>
+                  <span>
+                    <UserRound size={14} />
+                    Recruiter
+                  </span>
+                </div>
+              </div>
+              <button className="secondary-button">View</button>
+            </article>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
