@@ -391,8 +391,6 @@ MONGO_URI=your_mongodb_connection_string
 VITE_API_URL=http://localhost:5000/api
 ```
 
-**Never commit your actual MongoDB connection string or other secrets to GitHub.**
-
 ---
 
 ## 📚 Concepts Demonstrated
