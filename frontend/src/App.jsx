@@ -5,11 +5,11 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Candidates from "./pages/Candidates.jsx";
 import CandidateDetails from "./pages/CandidateDetails.jsx";
 import Jobs from "./pages/Jobs.jsx";
+import { getCandidates } from "./services/candidateApi.js";
 import Applications from "./pages/Applications.jsx";
 import Interviews from "./pages/Interviews.jsx";
 import Reports from "./pages/Reports.jsx";
 import JobDetails from "./pages/JobDetails.jsx";
-import { getCandidates } from "./services/candidateApi.js";
 import { getJobs } from "./services/jobApi.js";
 
 export default function App() {
@@ -92,12 +92,13 @@ export default function App() {
         />
         <Route path="/candidates/:id" element={<CandidateDetails />} />
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/jobs/:id" element={<JobDetails />} />
         <Route path="/applications" element={<Applications />} />
         <Route path="/interviews" element={<Interviews />} />
         <Route path="/reports" element={<Reports stats={stats} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
-      <Route path="/jobs/:id" element={<JobDetails />} />
+      
     </Routes>
   );
 }

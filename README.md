@@ -1,8 +1,12 @@
 # TalentFlow – Recruitment Management System
 
-A full-stack recruitment management application built with the **MERN stack** for managing candidates and job positions through a responsive web interface and RESTful backend APIs.
+TalentFlow is a full-stack recruitment management application built with the **MERN stack**. It provides a responsive interface for managing candidates and job positions through RESTful APIs and MongoDB.
 
-## 🚀 Features
+The current version focuses on **Candidate Management and Job Position Management**, with additional recruitment pages designed as UI prototypes for future expansion.
+
+---
+
+## 🚀 Implemented Features
 
 ### Candidate Management
 
@@ -13,36 +17,60 @@ A full-stack recruitment management application built with the **MERN stack** fo
 * Search candidates
 * Track candidate status
 * Store skills and experience
+* MongoDB persistence
 
 ### Job Position Management
 
 * Create job positions
-* View available positions
-* View detailed job information
+* View job positions
+* View job details
 * Update job positions
 * Delete job positions
-* Manage openings, location, experience, skills, and employment type
+* Manage job location and department
+* Manage employment type
+* Manage required skills
+* Manage required experience
+* Manage number of openings
 * Track job status
+* MongoDB persistence
 
 ### Dashboard
 
-* Candidate statistics
+* Total candidate count
 * Available candidate count
 * Interviewing candidate count
-* Open job position count
+* Hired candidate count
+* Total job positions
+* Open job positions
 * Recent candidates
 * Recruitment workspace overview
 
-### UI & UX
+### Frontend
 
-* Responsive layout
+* Responsive UI
 * React Router navigation
+* Dynamic candidate and job detail pages
 * Reusable React components
+* Controlled forms
+* Search functionality
 * Loading states
 * Error handling
 * Empty states
-* Responsive candidate and job views
 * Lucide icons
+
+---
+
+## 🖥️ UI Prototypes
+
+The project currently contains additional interface prototypes for future development:
+
+* Applications
+* Interviews
+* Reports & Analytics
+
+These pages currently use demonstration data and are **not connected to MongoDB or backend APIs**.
+
+They are intentionally kept as UI prototypes while the core Candidate and Job Position modules are implemented end-to-end.
 
 ---
 
@@ -78,9 +106,9 @@ A full-stack recruitment management application built with the **MERN stack** fo
 
 ---
 
-## 🏗️ Project Architecture
+## 🏗️ Architecture
 
-The application follows a layered full-stack architecture:
+TalentFlow follows a layered full-stack architecture:
 
 ```text
 React Frontend
@@ -98,7 +126,13 @@ Mongoose Models
 MongoDB
 ```
 
-### Backend Structure
+This separation keeps frontend communication, HTTP handling, business logic, and database operations organized independently.
+
+---
+
+## 📁 Project Structure
+
+### Backend
 
 ```text
 backend/
@@ -125,12 +159,13 @@ backend/
 │   ├── candidateService.js
 │   └── jobService.js
 │
-├── .env
+├── .env.example
+├── .gitignore
 ├── package.json
 └── server.js
 ```
 
-### Frontend Structure
+### Frontend
 
 ```text
 frontend/
@@ -160,16 +195,18 @@ frontend/
 │   ├── main.jsx
 │   └── styles.css
 │
-├── .env
+├── .env.example
+├── .gitignore
+├── index.html
 ├── package.json
 └── vite.config.js
 ```
 
 ---
 
-## 🔌 API Endpoints
+## 🔌 REST API
 
-### Candidates
+### Candidate Endpoints
 
 | Method | Endpoint              | Description         |
 | ------ | --------------------- | ------------------- |
@@ -179,7 +216,7 @@ frontend/
 | PUT    | `/api/candidates/:id` | Update candidate    |
 | DELETE | `/api/candidates/:id` | Delete candidate    |
 
-### Job Positions
+### Job Endpoints
 
 | Method | Endpoint        | Description   |
 | ------ | --------------- | ------------- |
@@ -189,83 +226,19 @@ frontend/
 | PUT    | `/api/jobs/:id` | Update job    |
 | DELETE | `/api/jobs/:id` | Delete job    |
 
-### Health Check
+### API Health Check
 
 ```text
 GET /api/health
 ```
 
-Returns the current API status.
-
----
-
-## ⚙️ Installation & Setup
-
-### 1. Clone the repository
-
-```bash
-git clone <your-github-repository-url>
-cd talentflow-recruitment-management-system
-```
-
-### 2. Setup Backend
-
-```bash
-cd backend
-npm install
-```
-
-Create a `.env` file:
-
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-```
-
-Start the backend:
-
-```bash
-npm run dev
-```
-
-Backend runs on:
-
-```text
-http://localhost:5000
-```
-
-### 3. Setup Frontend
-
-Open another terminal:
-
-```bash
-cd frontend
-npm install
-```
-
-Create a `.env` file:
-
-```env
-VITE_API_URL=http://localhost:5000/api
-```
-
-Start the frontend:
-
-```bash
-npm run dev
-```
-
-Frontend normally runs on:
-
-```text
-http://localhost:5173
-```
+Returns the status of the backend API.
 
 ---
 
 ## 🔄 Application Flow
 
-### Candidate Example
+### Candidate Creation
 
 ```text
 User
@@ -293,7 +266,7 @@ React State
 Updated UI
 ```
 
-### Job Example
+### Job Creation
 
 ```text
 User
@@ -304,7 +277,7 @@ jobApi.js
  ↓
 POST /api/jobs
  ↓
-Express
+Express Route
  ↓
 Job Controller
  ↓
@@ -316,41 +289,149 @@ MongoDB
  ↓
 JSON Response
  ↓
-React UI
+React State
+ ↓
+Updated UI
+```
+
+### Dynamic Details
+
+Candidate and job detail pages use the MongoDB document ID from the URL:
+
+```text
+/jobs/:id
+/candidates/:id
+```
+
+React Router extracts the ID using `useParams()`, which is then used to request the corresponding record from the backend.
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone the repository
+
+```bash
+git clone <your-github-repository-url>
+
+cd talentflow-recruitment-management-system
+```
+
+### 2. Backend Setup
+
+```bash
+cd backend
+
+npm install
+```
+
+Create a `.env` file:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+```
+
+Start the backend:
+
+```bash
+npm run dev
+```
+
+Backend:
+
+```text
+http://localhost:5000
+```
+
+### 3. Frontend Setup
+
+Open another terminal:
+
+```bash
+cd frontend
+
+npm install
+```
+
+Create a `.env` file:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+Start the frontend:
+
+```bash
+npm run dev
+```
+
+Frontend:
+
+```text
+http://localhost:5173
 ```
 
 ---
 
-## 📚 What This Project Demonstrates
+## 🔐 Environment Variables
 
-This project was built to practice real full-stack development concepts including:
+Environment files are intentionally excluded from Git using `.gitignore`.
+
+### Backend
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+```
+
+### Frontend
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+**Never commit your actual MongoDB connection string or other secrets to GitHub.**
+
+---
+
+## 📚 Concepts Demonstrated
+
+This project demonstrates practical full-stack development concepts including:
 
 * React component architecture
-* React state and lifecycle
+* React state management
+* React `useEffect`
 * React Router
-* Forms and controlled inputs
+* Dynamic routes
+* URL parameters
+* Controlled forms
 * REST API integration
-* Asynchronous JavaScript
 * HTTP methods
 * JSON data exchange
+* Asynchronous JavaScript
+* Fetch API
 * Express.js routing
-* Controller-service separation
+* Controllers
+* Service layer architecture
 * Mongoose schemas and models
 * MongoDB CRUD operations
-* Error handling
-* Loading and empty states
-* Responsive frontend development
-* Git and GitHub workflow
+* API error handling
+* Loading states
+* Empty states
+* Responsive UI development
+* Git and GitHub
 
 ---
 
 ## 🔮 Future Scope
 
-The current version intentionally focuses on **Candidate and Job Position management**.
+The current version intentionally focuses on **Candidates and Job Positions**.
 
 Potential future extensions include:
 
-* Authentication and role-based access
+* Authentication
+* Role-based access control
 * Application management
 * Interview scheduling
 * Resume uploads
@@ -360,12 +441,12 @@ Potential future extensions include:
 * RAG-based recruitment knowledge assistant
 * Cloud deployment
 
-These features are outside the scope of the current version.
+These features are **not implemented in the current version**.
 
 ---
 
-## 👨‍💻 Project Purpose
+## 🎯 Project Purpose
 
-TalentFlow was developed as a portfolio project to demonstrate practical **MERN full-stack development**, including frontend development, backend API design, database integration, and building a real-world business workflow.
+TalentFlow was developed as a portfolio project to demonstrate practical **MERN full-stack development** through a real-world recruitment management use case.
 
-The project also provides a foundation for experimenting with future **AI/Generative AI integrations** in recruitment technology.
+The project focuses on understanding the complete flow from a React interface to REST APIs, Express.js backend logic, Mongoose, and MongoDB persistence while maintaining a modular and maintainable project structure.
